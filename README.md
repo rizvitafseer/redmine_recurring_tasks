@@ -6,7 +6,7 @@
 [Русская версия](README-RU.md)
 
 Plugin for creating scheduled tasks from templates.
-
+Rizvi
 # Installation
 
 * Ruby 2.2+
