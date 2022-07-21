@@ -1,0 +1,37 @@
+language: ruby
+rvm:
+  - 2.4.9
+  - 2.6.5
+
+addons:
+  postgresql: "9.4"
+
+env:
+  - REDMINE_VER=3.4-stable; TZ=UTC
+  - REDMINE_VER=4.1-stable; TZ=Europe/Moscow
+  - REDMINE_VER=4.1-stable; TZ=UTC
+  - REDMINE_VER=4.1-stable; TZ=Europe/Dublin
+
+matrix:
+  exclude:
+  - rvm: 2.6.5
+    env: REDMINE_VER=3.4-stable; TZ=UTC
+
+branches:
+  only:
+    - master
+    - develop
+
+install: "echo skip bundle install"
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+
+script:
+  - export TESTSPACE=`pwd`/testspace
+  - export NAME_OF_PLUGIN=redmine_recurring_tasks
+  - export PATH_TO_PLUGIN=`pwd`
+  - export PATH_TO_REDMINE=$TESTSPACE/redmine
+  - mkdir $TESTSPACE
+  - cp test/support/* $TESTSPACE/
+  - bash -x ./travis.sh

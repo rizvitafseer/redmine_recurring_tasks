@@ -1,0 +1,24 @@
+<%
+  @settings = ActionController::Parameters.new(@settings)
+%>
+<p>
+  <%= label_tag 'settings[associations]', l(:settings_associations) %>
+  <%= select_tag 'settings[associations]',
+                 options_for_select(RedmineRecurringTasks.issue_associations, @settings[:associations]),
+                 { multiple: true, size: 20, style: 'width: 50%;' } %>
+  <p class="notice"><%= l(:settings_associations_warning) %></p>
+</p>
+<p>
+  <%= button_tag l(:button_reset), type: :button, onClick: '$("#settings_associations option:selected").prop("selected", false);' %>
+</p>
+
+<p>
+  <%= label_tag 'settings[copied_issue_status]', l(:settings_copied_issue_status) %>
+  <%= select_tag 'settings[copied_issue_status]',
+                 options_for_select([[l(:settings_copy_from_original), 0], *IssueStatus.sorted.map { |status| [status.name, status.id] }], @settings[:copied_issue_status]),
+                 include_blank: true %>
+</p>
+<p>
+  <%= label_tag 'settings[use_anonymous_user]', l(:settings_use_anonymous_user) %>
+  <%= check_box_tag 'settings[use_anonymous_user]', 1, @settings[:use_anonymous_user] %>
+</p>
